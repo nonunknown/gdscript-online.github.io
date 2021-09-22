@@ -42,7 +42,7 @@ func register_api() -> void:
 #		print("Name: ", value.name)
 		classes_name.append(value.name) #register all godot classes
 		text_edit.add_keyword_color(value.name, text_edit.CLASS_COLOR)
-		print("registering: ", value.name)
+#		print("registering: ", value.name)
 		if value.name == "Node":
 			print("Found node")
 			for method in value.methods:

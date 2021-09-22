@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://resources/code_font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://script_editor.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://main_window.gd" type="Script" id=5]
 [ext_resource path="res://OptButton.gd" type="Script" id=6]
 [ext_resource path="res://CursorPos.gd" type="Script" id=7]
+[ext_resource path="res://FileManager.gd" type="Script" id=8]
 
 [sub_resource type="CanvasItemMaterial" id=3]
 blend_mode = 1
@@ -46,23 +47,43 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HSplitContainer" type="HSplitContainer" parent="."]
+[node name="HSplitContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-split_offset = 640
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
-margin_right = 657.0
+[node name="Files" type="VBoxContainer" parent="HSplitContainer" groups=[
+"FILES",
+]]
+margin_right = 300.0
 margin_bottom = 720.0
+rect_min_size = Vector2( 300, 0 )
+size_flags_vertical = 3
+script = ExtResource( 8 )
+
+[node name="ItemList" type="ItemList" parent="HSplitContainer/Files"]
+margin_right = 300.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+items = [ "test.gd", null, false, "other.gd", null, false ]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
+margin_left = 304.0
+margin_right = 790.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
 custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ScriptEditor" type="TextEdit" parent="HSplitContainer/VBoxContainer" groups=[
 "SCR_EDIT",
 ]]
-margin_right = 657.0
+margin_right = 486.0
 margin_bottom = 682.0
 size_flags_vertical = 3
 custom_colors/selection_color = Color( 0, 0.666667, 1, 0.25098 )
@@ -105,21 +126,24 @@ __meta__ = {
 
 [node name="ErrorPanel" type="PanelContainer" parent="HSplitContainer/VBoxContainer"]
 margin_top = 682.0
-margin_right = 657.0
+margin_right = 486.0
 margin_bottom = 720.0
 
 [node name="Label" type="Label" parent="HSplitContainer/VBoxContainer/ErrorPanel"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 649.0
+margin_right = 478.0
 margin_bottom = 30.0
 custom_colors/font_color = Color( 1, 0.501961, 0.376471, 1 )
 autowrap = true
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="HSplitContainer"]
-margin_left = 669.0
+margin_left = 794.0
 margin_right = 1280.0
 margin_bottom = 720.0
+rect_min_size = Vector2( 300, 0 )
+size_flags_horizontal = 3
+alignment = 2
 
 [node name="OptButton" type="Button" parent="HSplitContainer/VBoxContainer2"]
 visible = false
@@ -139,7 +163,7 @@ __meta__ = {
 }
 
 [node name="RunButton" type="Button" parent="HSplitContainer/VBoxContainer2"]
-margin_right = 611.0
+margin_right = 486.0
 margin_bottom = 22.0
 grow_horizontal = 0
 rect_min_size = Vector2( 0, 20 )
@@ -155,7 +179,7 @@ __meta__ = {
 
 [node name="OutputPanel" type="PanelContainer" parent="HSplitContainer/VBoxContainer2"]
 margin_top = 26.0
-margin_right = 611.0
+margin_right = 486.0
 margin_bottom = 720.0
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
@@ -166,13 +190,25 @@ __meta__ = {
 [node name="RichTextLabel" type="RichTextLabel" parent="HSplitContainer/VBoxContainer2/OutputPanel"]
 margin_left = 32.0
 margin_top = 24.0
-margin_right = 579.0
+margin_right = 454.0
 margin_bottom = 670.0
 focus_mode = 2
 custom_colors/selection_color = Color( 0, 0.666667, 1, 0.376471 )
 custom_fonts/normal_font = ExtResource( 1 )
 scroll_following = true
 selection_enabled = true
+
+[node name="bt_scrlist" type="Button" parent="." groups=[
+"BT_SCR",
+]]
+margin_left = 288.0
+margin_top = 272.0
+margin_right = 308.0
+margin_bottom = 294.0
+text = "<"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="EngineVersion" type="Label" parent="."]
 modulate = Color( 1, 1, 1, 0.501961 )
@@ -210,3 +246,4 @@ __meta__ = {
 [connection signal="text_changed" from="HSplitContainer/VBoxContainer/ScriptEditor" to="HSplitContainer/VBoxContainer/ScriptEditor" method="_on_ScriptEditor_text_changed"]
 [connection signal="pressed" from="HSplitContainer/VBoxContainer2/OptButton" to="HSplitContainer/VBoxContainer2/OptButton" method="_on_OptButton_pressed"]
 [connection signal="pressed" from="HSplitContainer/VBoxContainer2/RunButton" to="HSplitContainer/VBoxContainer/ScriptEditor" method="_run_button_pressed"]
+[connection signal="pressed" from="bt_scrlist" to="HSplitContainer/Files" method="_on_bt_scrlist_pressed"]

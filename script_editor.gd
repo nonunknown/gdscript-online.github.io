@@ -188,16 +188,20 @@ func _on_ScriptEditor_text_changed() -> void:
 	var split = line_text.split(" ")
 	var _current_word = split[-1]
 	emit_signal("incoming_word",_current_word, get_line(cursor_get_line()))
-	
-	
-	
+
 	emit_signal("update_src", text)
 	
 	pass # Replace with function body.
 
+# This is necessary due to the new files Control which occupies a portion of the screen
+# called by _on_ScriptEditor_cursor_changed()
+onready var _files:Control = get_tree().get_nodes_in_group("FILES")[0]
+func _get_ui_offset() -> float:
+	if _files.visible: return _files.rect_size.x
+	else: return 0.0
 
 func _on_ScriptEditor_cursor_changed() -> void:
-	$CursorPos.rect_position = Vector2((8 * cursor_get_column()) + 43, (23 * cursor_get_line() ) + 23 )
+	$CursorPos.rect_position = Vector2((8 * cursor_get_column()) + (43 + _get_ui_offset()), (23 * cursor_get_line() ) + 23 )
 
 
 func get_cursor_pos() -> Vector2:
